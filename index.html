@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>Food Finder</title>
+<script
+  src="http://code.jquery.com/jquery-3.2.1.min.js">
+</script>
+</head>
+
+<body>
+    <form>
+    Enter an item off Food: <input type="text" id="foodField" value=""> 
+     <input id="foodButton" type="submit" value="Submit">
+    <br>
+    Suggestions: <span id="txtHint">Empty</span>
+   
+    </form>
+    <textarea id="displayFood">No Food</textarea>
+    <script>
+//$(document).ready(function() {
+/*$( "#foodField" ).keyup(function() {
+ var url = "https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?api_key=vOqKkeEiiW2DPf65OT9MRN0xKc41MfLnsazNwOIn&location=Provo+UT";
+$.getJSON(url,function(data) {
+
+    var everything;
+    everything = "<ul>";
+    $.each(data, function(i,item) {
+      everything += "<li> "+ data.list.item[i].name + " NBDO Number " + data.list.item[i].ndbno ; //name this is important
+    });
+    everything += "</ul>";
+    $("#txtHint").html(everything);
+    
+    
+  })
+  .done(function() { console.log('getJSON request succeeded!'); })
+  .fail(function(jqXHR, textStatus, errorThrown) { 
+    console.log('getJSON request failed! ' + textStatus); 
+    console.log("incoming "+jqXHR.responseText);
+  })
+  .always(function() { console.log('getJSON request ended!')
+  
+  });
+});
+});
+*/
+
+$("#foodButton").click(function(e){
+  var value = $("#foodField").val();
+  console.log(value);
+  e.preventDefault();
+  
+  var myurl= "https://api.nal.usda.gov/ndb/search/?format=json&q=" + value + "&sort=n&max=25&offset=0&api_key=vOqKkeEiiW2DPf65OT9MRN0xKc41MfLnsazNwOIn";
+  //myurl += value;
+  console.log(myurl);
+  $.ajax({
+    url : myurl,
+    dataType : "json",
+        success : function(data) {
+          var everything= "";
+    console.log(data);
+    var myarray = data.list.item;
+    console.log(myarray);
+    $.each(myarray,function(i,item){
+     everything += "<li> "+ data.list.item[i].name; 
+     everything += " NDBNO Number " + data.list.item[i].ndbno ; //name this is important
+    });
+    everything += "</ul>";
+    $("#txtHint").html(everything);
+        }
+  });
+});
+</script>
+</body>
+</html>
