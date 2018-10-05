@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Food Finder</title>
+  <script src="http://code.jquery.com/jquery-3.2.1.min.js">
+  </script>
+</head>
+
+<body>
+  <form>
+    Enter an item off Food: <input type="text" id="foodField" value="">
+    <input id="foodButton" type="submit" value="Submit">
+    <br> Suggestions: <span id="txtHint">Empty</span>
+
+  </form>
+  <textarea id="displayFood">No Food</textarea>
+
+
+  <!--This is the script that calls and finds the API DATA and puts it where it goes-->
+  <script>
+    $("#foodButton").click(function(e) {
+      var value = $("#foodField").val();
+      var allData = "<ul>";
+      console.log(value);
+      e.preventDefault();
+
+      var myurl = "https://api.nal.usda.gov/ndb/search/?format=json&q=" + value + "&sort=n&max=25&offset=0&api_key=vOqKkeEiiW2DPf65OT9MRN0xKc41MfLnsazNwOIn";
+      console.log(myurl);
+
+      $.ajax({
+        ////////////////////////////////////////////////////////
+        url: myurl,
+        dataType: "json",
+        success: callBack1,
+        /////////////////////////////////////////////////////////////
+      });
+
+      function callBack1(data) {
+        console.log(data);
+        var myarray = data.list.item;
+        var numberarray = new Array();
+        console.log(myarray);
+        $.each(myarray, function(i, item) {
+          //everything += "<li> "+ data.list.item[i].name; 
+          //everything += "<br>NDBNO Number " + data.list.item[i].ndbno ; //name this is important
+          numberarray.push(data.list.item[i].ndbno);
+
+          var myurl2 = "https://api.nal.usda.gov/ndb/reports/?ndbno=" + numberarray[i] + "&type=b&format=json&api_key=vOqKkeEiiW2DPf65OT9MRN0xKc41MfLnsazNwOIn";
+          console.log(myurl2);
+          allData += "<br>" + data.list.item[i].name + " ";
+          $.ajax({
+            async: false,
+            url: myurl2,
+            dataType: "json",
+            success: callBack2,
+          });
+          
+        });
+        console.log("---------allData:");
+        console.log(allData);
+        allData += "END</ul>";
+        
+        $("#txtHint").html(allData);
+      }
+
+
+      function callBack2(data) {
+        console.log(data);
+        var myarray = data.report.food.nutrients;
+        //console.log("New stuff:");
+        //console.log(myarray);
+        $.each(data, function(i, item) {
+          allData += "<li> Calories: " + myarray[0].value;
+          //console.log("MyArray: " + myarray[0].value);
+        });
+        console.log("allData2:");
+        console.log(allData)
+        //console.log("myArray.value:");
+        //console.log(myarray[0].value)
+      }
+
+
+    });
+  </script>
+
+</html>
