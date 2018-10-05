@@ -1,0 +1,12 @@
+h1 {
+    text-align: center;
+}
+
+p {
+    line-height: 100%;
+}
+
+button {
+    line-height: 150%;
+    margin: 12px;
+}

@@ -3,18 +3,44 @@
 
 <head>
   <title>Food Finder</title>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!--Bootstrap main css-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!--Custom CSS-->
+  <link rel="stylesheet" href="./css/main.css">
+
+
   <script src="http://code.jquery.com/jquery-3.2.1.min.js">
   </script>
 </head>
 
 <body>
-  <form>
-    Enter an item off Food: <input type="text" id="foodField" value="">
-    <input id="foodButton" type="submit" value="Submit">
-    <br> Suggestions: <span id="txtHint">Empty</span>
+  
+  <div class="container">
+      <div class="row"><h1>Discover Calories of some food!</h1></div>
 
-  </form>
-  <textarea id="displayFood">No Food</textarea>
+      <div class="row">
+        <div class="col-12 col-md-10 border extraPadding">
+          <br> Suggestions: <span id="txtHint">Empty</span>
+        </div>
+        <div class="col-6 col-md-2 border">
+          <form>
+            Enter an item off Food: <input type="text" id="foodField" value="">
+            <input id="foodButton" type="submit" value="Submit">
+          </form>
+        </div>
+      </div>
+    </div>
+  
+  
+  
+  
+  
 
 
   <!--This is the script that calls and finds the API DATA and puts it where it goes-->
@@ -55,12 +81,12 @@
             dataType: "json",
             success: callBack2,
           });
-          
+
         });
         console.log("---------allData:");
         console.log(allData);
         allData += "END</ul>";
-        
+
         $("#txtHint").html(allData);
       }
 
